@@ -5,7 +5,7 @@ import streamlit as st
 from backtester import backtest, metrics
 
 st.set_page_config(page_title="Stock Strategy Backtester",page_icon="📉",layout="wide")
-st.title("Moving-Average Strategy Backtester")
+st.title("📉 Moving-Average Strategy Backtester")
 st.caption("Long-or-cash strategy versus buy-and-hold | educational research tool")
 with st.sidebar:
     st.header("Inputs")
@@ -55,24 +55,10 @@ if go_button:
         cols[1].metric("Buy & hold total return",f"{b['total_return']:.1%}")
         cols[2].metric("Strategy max drawdown",f"{s['max_drawdown']:.1%}")
         cols[3].metric("Strategy Sharpe (0% RF)",f"{s['sharpe_zero_rf']:.2f}")
-        summary = pd.DataFrame({
-    "Strategy": s,
-    "Buy and hold": b
-})
-
-percent_rows = [
-    "total_return",
-    "cagr",
-    "annual_volatility",
-    "max_drawdown"
-]
-
-styled_summary = summary.style.format(
-    "{:.2%}",
-    subset=pd.IndexSlice[percent_rows, :]
-)
-
-st.dataframe(styled_summary)
+        summary=pd.DataFrame({"Strategy":s,"Buy and hold":b})
+        percent_rows = ["total_return", "cagr", "annual_volatility", "max_drawdown"]
+        styled_summary = summary.style.format("{:.2%}", subset=pd.IndexSlice[percent_rows, :])
+        st.dataframe(styled_summary)
         fig=go.Figure()
         for name,col in [("Strategy","strategy_equity"),("Buy & hold","buyhold_equity")]:
             fig.add_trace(go.Scatter(x=frame.index,y=frame[col],name=name))
