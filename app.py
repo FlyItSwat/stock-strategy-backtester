@@ -5,7 +5,7 @@ import streamlit as st
 from backtester import backtest, metrics
 
 st.set_page_config(page_title="Stock Strategy Backtester",page_icon="📉",layout="wide")
-st.title("📉 Moving-Average Strategy Backtester")
+st.title("Moving-Average Strategy Backtester")
 st.caption("Long-or-cash strategy versus buy-and-hold | educational research tool")
 with st.sidebar:
     st.header("Inputs")
