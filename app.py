@@ -55,9 +55,24 @@ if go_button:
         cols[1].metric("Buy & hold total return",f"{b['total_return']:.1%}")
         cols[2].metric("Strategy max drawdown",f"{s['max_drawdown']:.1%}")
         cols[3].metric("Strategy Sharpe (0% RF)",f"{s['sharpe_zero_rf']:.2f}")
-        summary=pd.DataFrame({"Strategy":s,"Buy and hold":b})
-        st.dataframe(summary.style.format("{:.2%}",subset=["Strategy","Buy and hold"],
-                                          subset=pd.IndexSlice[["total_return","cagr","annual_volatility","max_drawdown"],:]))
+        summary = pd.DataFrame({
+    "Strategy": s,
+    "Buy and hold": b
+})
+
+percent_rows = [
+    "total_return",
+    "cagr",
+    "annual_volatility",
+    "max_drawdown"
+]
+
+styled_summary = summary.style.format(
+    "{:.2%}",
+    subset=pd.IndexSlice[percent_rows, :]
+)
+
+st.dataframe(styled_summary)
         fig=go.Figure()
         for name,col in [("Strategy","strategy_equity"),("Buy & hold","buyhold_equity")]:
             fig.add_trace(go.Scatter(x=frame.index,y=frame[col],name=name))
